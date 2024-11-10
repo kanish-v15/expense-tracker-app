@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Expense Reports</h2>
+
+<form method="get" id="report-form">
+    <label for="year">Year:</label>
+    <select name="year" id="year">
+        {% for y in years %}
+            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+    </select>
+    
+    <label for="month">Month:</label>
+    <select name="month" id="month">
+        <option value="">Full Year</option>
+        {% for m in months %}
+            <option value="{{ m.number }}" {% if m.number == month %}selected{% endif %}>{{ m.name }}</option>
+        {% endfor %}
+    </select>
+    
+    <button type="submit">Generate Report</button>
+</form>
+
+<div>
+    <h3>Expenses Overview</h3>
+    <canvas id="expenseChart" width="400" height="200"></canvas>
+</div>
+
+<div>
+    <h3>Expenses by Category</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in category_totals %}
+            <tr>
+                <td>{{ category.category }}</td>
+                <td>${{ category.total|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>${{ total_expense|floatformat:2 }}</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div>
+    <a href="{% url 'download_report' %}?year={{ year }}{% if month %}&month={{ month }}{% endif %}" class="btn">Download Report (PDF)</a>
+    <button onclick="window.print()" class="btn">Print Report</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('expenseChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Expenses',
+                data: {{ data|safe }},
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Update chart when form is submitted
+    document.getElementById('report-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        this.submit();
+    });
+</script>
+{% endblock %}

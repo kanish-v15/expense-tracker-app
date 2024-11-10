@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Expense</h2>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.amount.id_for_label }}">Amount:</label>
+            {{ form.amount }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.category.id_for_label }}">Category:</label>
+            {{ form.category }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">Expense Name:</label>
+            {{ form.description }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.date.id_for_label }}">Date of Transaction:</label>
+            {{ form.date }}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Expense</button>
+    </form>
+</div>
+{% endblock %}

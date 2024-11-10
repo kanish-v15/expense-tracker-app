@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-form">
+    <h2>Add Category</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Add Category</button>
+    </form>
+    <a href="{% url 'manage_categories' %}" class="btn">Cancel</a>
+</div>
+{% endblock %}

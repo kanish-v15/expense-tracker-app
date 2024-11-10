@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-form">
+    <h2>Edit Expense</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Update Expense</button>
+    </form>
+    <a href="{% url 'dashboard' %}" class="btn">Cancel</a>
+</div>
+{% endblock %}
