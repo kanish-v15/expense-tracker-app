@@ -24,4 +24,4 @@ A simple and effective application for tracking expenses, managing budgets, and 
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Django, Django REST Framework
-- **Database**: SQLite (development) or PostgreSQL (production)
+- **Database**: SQLite (development) and PostgreSQL (production)
